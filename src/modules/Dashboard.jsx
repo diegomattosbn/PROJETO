@@ -87,11 +87,13 @@ export default function Dashboard({ store, onNavigate }) {
         backgroundSize: '200% 200%',
         animation: 'cardColorBreath 8s ease-in-out infinite',
         borderRadius: 20,
-        padding: '28px 32px',
+        padding: window.innerWidth <= 768 ? '20px 16px' : '28px 32px',
         marginBottom: 24,
         display: 'flex',
-        alignItems: 'center',
+        flexDirection: window.innerWidth <= 768 ? 'column' : 'row',
+        alignItems: window.innerWidth <= 768 ? 'stretch' : 'center',
         justifyContent: 'space-between',
+        gap: 16,
         position: 'relative',
         overflow: 'hidden',
         color: 'white',
@@ -101,7 +103,7 @@ export default function Dashboard({ store, onNavigate }) {
         <div style={{ position: 'absolute', top: 10, right: 200, width: 50, height: 50, borderRadius: '50%', background: 'rgba(255,255,255,0.05)' }} />
         <div style={{ position: 'relative', zIndex: 1 }}>
           <div style={{ fontSize: 14, fontWeight: 500, opacity: 0.9, marginBottom: 4 }}>{greeting.emoji} {greeting.text}!</div>
-          <div style={{ fontSize: 24, fontWeight: 800, letterSpacing: -0.5, marginBottom: 6 }}>Bem-vindo ao Mattos Store</div>
+          <div style={{ fontSize: window.innerWidth <= 768 ? 20 : 24, fontWeight: 800, letterSpacing: -0.5, marginBottom: 6 }}>Bem-vindo ao Mattos Store</div>
           <div style={{ fontSize: 13, opacity: 0.85 }}>Acompanhe suas vendas e controle seus clientes em um só lugar.</div>
         </div>
         <button onClick={() => onNavigate && onNavigate('clients')} style={{
@@ -131,7 +133,7 @@ export default function Dashboard({ store, onNavigate }) {
       </div>
 
       {/* Filtros */}
-      <div className="flex items-center justify-between gap-16" style={{ marginBottom: 24 }}>
+      <div className="flex items-center justify-between" style={{ marginBottom: 24, gap: 16, flexWrap: 'wrap' }}>
         <div className="period-filter">
           {[
             { key: 'day', label: 'Hoje' },

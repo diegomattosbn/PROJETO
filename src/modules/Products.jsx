@@ -47,16 +47,16 @@ export default function Products({ store, toast }) {
         <div className="card-header">
           <span className="card-title">Novo Produto</span>
         </div>
-        <div style={{ display: 'flex', gap: 14, alignItems: 'flex-end' }}>
-          <div className="form-group" style={{ flex: 2 }}>
+        <div style={{ display: 'flex', gap: 14, alignItems: 'flex-end', flexWrap: 'wrap' }}>
+          <div className="form-group" style={{ flex: 2, minWidth: 200 }}>
             <label className="form-label">Nome do Produto *</label>
             <input className="form-control" value={form.name} onChange={update('name')} placeholder="Ex: Arroz 5kg" onKeyDown={e => e.key === 'Enter' && handleAdd()} />
           </div>
-          <div className="form-group" style={{ flex: 1 }}>
+          <div className="form-group" style={{ flex: 1, minWidth: 120 }}>
             <label className="form-label">Qtd. em Estoque *</label>
             <input type="number" className="form-control" value={form.stock} onChange={update('stock')} placeholder="0" min={0} />
           </div>
-          <div className="form-group" style={{ flex: 1 }}>
+          <div className="form-group" style={{ flex: 1, minWidth: 120 }}>
             <label className="form-label">Valor de Venda (R$) *</label>
             <input type="number" className="form-control" value={form.price} onChange={update('price')} placeholder="0,00" step="0.01" min={0} />
           </div>

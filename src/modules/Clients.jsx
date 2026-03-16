@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import SecurityModal from '../components/SecurityModal';
 
 const fmt = v => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(v);
@@ -282,6 +282,13 @@ export default function Clients({ store, toast, selectedClientId, onSelectClient
   const [modal, setModal] = useState(null);
   const [editTx, setEditTx] = useState(null);
   const [securityModal, setSecurityModal] = useState(null); // { title, onConfirm }
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const filtered = useMemo(() =>
     store.clients.filter(c => c.name.toLowerCase().includes(search.toLowerCase())),
@@ -292,10 +299,14 @@ export default function Clients({ store, toast, selectedClientId, onSelectClient
   const debt = selected ? store.getClientDebt(selected.id) : 0;
   const txs = selected ? store.getClientTransactions(selected.id) : [];
 
+  // Mobile: mostrar perfil ou lista, não ambos
+  const showProfile = isMobile && selected;
+  const showList = !isMobile || !selected;
+
   return (
-    <div className="grid-2" style={{ gap: 24, alignItems: 'start' }}>
+    <div className={isMobile ? '' : 'grid-2'} style={{ gap: 24, alignItems: 'start' }}>
       {/* Painel Esquerdo: Lista */}
-      <div>
+      {showList && <div>
         <div className="card">
           <div className="flex items-center justify-between gap-12" style={{ marginBottom: 16 }}>
             <div className="header-search" style={{ flex: 1, width: 'auto' }}>
@@ -328,10 +339,10 @@ export default function Clients({ store, toast, selectedClientId, onSelectClient
             ))}
           </div>
         </div>
-      </div>
+      </div>}
 
       {/* Painel Direito: Perfil */}
-      <div>
+      {(!isMobile || showProfile) && <div>
         {!selected ? (
           <div className="card" style={{ minHeight: 400 }}>
             <div className="empty-state" style={{ minHeight: 380 }}>
@@ -341,6 +352,12 @@ export default function Clients({ store, toast, selectedClientId, onSelectClient
           </div>
         ) : (
           <>
+            {/* Botão Voltar (mobile) */}
+            {isMobile && (
+              <button className="btn btn-secondary" style={{ marginBottom: 12, width: '100%' }} onClick={() => onSelectClient(null)}>
+                ← Voltar para lista
+              </button>
+            )}
             {/* Card Financeiro */}
             <div style={{
               background: debt > 0 ? 'linear-gradient(135deg, #ff6b6b, #ee5253)' : 'linear-gradient(135deg, var(--primary), var(--primary-dark))',
@@ -645,7 +662,7 @@ export default function Clients({ store, toast, selectedClientId, onSelectClient
             </div>
           </>
         )}
-      </div>
+      </div>}
 
       {/* Modais */}
       {modal === 'add' && (
