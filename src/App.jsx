@@ -109,7 +109,7 @@ export default function App() {
         {/* Rodapé Sidebar */}
         <div style={{ borderTop: '1px solid var(--border)', paddingTop: 16, marginTop: 'auto' }}>
           <div style={{ fontSize: 11, color: 'var(--text-muted)', textAlign: 'center', lineHeight: 1.5 }}>
-            Sistema de Controle<br/>de Cobrança v1.0
+            Produzido por Gritzky<br/>in Zaun Studio<br/>Todos os direitos reservados, 2026
           </div>
         </div>
       </aside>
